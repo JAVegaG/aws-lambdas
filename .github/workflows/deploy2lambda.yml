@@ -111,7 +111,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: $AWS_REGION
+          aws-region: "$AWS_REGION"
 
       - name: zip read function
         run: |
@@ -123,7 +123,7 @@ jobs:
         
       - name: update read function
         run: |
-          aws lambda update-function --region $AWS_REGION \
+          aws lambda update-function --region "$AWS_REGION" \
           --function-name "http-read-$AWS_REGION-$WORKSPACE-$WORKSPACE_ID" \
           --zip-file "index.zip"
       
@@ -137,7 +137,7 @@ jobs:
         
       - name: update write function
         run: |
-          aws lambda update-function --region $AWS_REGION \
+          aws lambda update-function --region "$AWS_REGION" \
           --function-name "http-write-$AWS_REGION-$WORKSPACE-$WORKSPACE_ID" \
           --zip-file "index.zip"
 
