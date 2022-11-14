@@ -19,7 +19,7 @@ env:
 
 jobs:
 
-  Set-workspace:
+  select-workspace:
     
     runs-on: ubuntu-latest
     outputs:
@@ -38,13 +38,13 @@ jobs:
 
   Update-develop:
     
-    needs: Set-workspace
+    needs: select-workspace
+    if: ${{ needs.select-workspace.outputs.workspace == "develop" }}
+
     runs-on: ubuntu-latest
     env:
       WORKSPACE: ${{ needs.Set-workspace.outputs.workspace }}
       WORKSPACE_ID: bFgYGXqNsLQ # Develop workspace id
-
-    if: WORKSPACE == "develop"
     
     steps:
 
@@ -93,13 +93,13 @@ jobs:
 
   Update-production:
     
-    needs: Set-workspace
+    needs: select-workspace
+    if: ${{ needs.select-workspace.outputs.workspace == "main" }}
+
     runs-on: ubuntu-latest
     env:
       WORKSPACE: ${{ needs.Set-workspace.outputs.workspace }}
       WORKSPACE_ID: zWazvHiGVQc # production workspace id
-    
-    if: WORKSPACE == "main"
     
     steps:
 
