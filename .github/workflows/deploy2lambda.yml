@@ -75,7 +75,7 @@ jobs:
         
       - name: update read function
         run: |
-          aws lambda update-function --region $AWS_REGION \
+          aws lambda update-function-code --region $AWS_REGION \
           --function-name "http-read-$AWS_REGION-$WORKSPACE-$WORKSPACE_ID" \
           --zip-file "index.zip"
       
@@ -89,7 +89,7 @@ jobs:
         
       - name: update write function
         run: |
-          aws lambda update-function --region $AWS_REGION \
+          aws lambda update-function-code --region $AWS_REGION \
           --function-name "http-write-$AWS_REGION-$WORKSPACE-$WORKSPACE_ID" \
           --zip-file "index.zip"
 
@@ -125,7 +125,7 @@ jobs:
         
       - name: update read function
         run: |
-          aws lambda update-function --region $AWS_REGION \
+          aws lambda update-function-code --region $AWS_REGION \
           --function-name "http-read-$AWS_REGION-$WORKSPACE-$WORKSPACE_ID" \
           --zip-file "index.zip"
       
@@ -139,7 +139,7 @@ jobs:
         
       - name: update write function
         run: |
-          aws lambda update-function --region $AWS_REGION \
+          aws lambda update-function-code --region $AWS_REGION \
           --function-name "http-write-$AWS_REGION-$WORKSPACE-$WORKSPACE_ID" \
           --zip-file "index.zip"
 
