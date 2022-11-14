@@ -39,11 +39,11 @@ jobs:
   Update-develop:
     
     needs: select-workspace
-    if: ${{ needs.select-workspace.outputs.workspace == "develop" }}
+    if: ${{ github.ref_name == "develop" || github.base.ref_name == "develop" }}
 
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: ${{ needs.Set-workspace.outputs.workspace }}
+      WORKSPACE: ${{ needs.select-workspace.outputs.workspace }}
       WORKSPACE_ID: bFgYGXqNsLQ # Develop workspace id
     
     steps:
@@ -94,11 +94,11 @@ jobs:
   Update-production:
     
     needs: select-workspace
-    if: ${{ needs.select-workspace.outputs.workspace == "main" }}
+    if: ${{ github.ref_name == "main" || github.base.ref_name == "main" }}
 
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: ${{ needs.Set-workspace.outputs.workspace }}
+      WORKSPACE: ${{ needs.select-workspace.outputs.workspace }}
       WORKSPACE_ID: zWazvHiGVQc # production workspace id
     
     steps:
