@@ -31,9 +31,9 @@ jobs:
         id: set-workspace
         run: |
           if [[ $GITHUB_EVENT_NAME == "pull_request" ]]; then
-            echo "workspace=$GITHUB_BASE_REF" >> $$GITHUB_OUTPUT
+            echo "workspace=$GITHUB_BASE_REF" >> $GITHUB_OUTPUT
           else
-            echo "workspace=$GITHUB_REF_NAME" >> $$GITHUB_OUTPUT
+            echo "workspace=$GITHUB_REF_NAME" >> $GITHUB_OUTPUT
           fi
 
   Update-develop:
