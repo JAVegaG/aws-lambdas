@@ -83,9 +83,8 @@ jobs:
         run: |
           if [[ -e index.zip ]]; then
             rm index.zip
-          else
-            zip "index.zip" http-write/index.js
           fi
+          zip "index.zip" http-write/index.js
         
       - name: update write function
         run: |
@@ -133,9 +132,8 @@ jobs:
         run: |
           if [[ -e index.zip ]]; then
             rm index.zip
-          else
-            zip "index.zip" http-write/index.js
           fi
+          zip "index.zip" http-write/index.js
         
       - name: update write function
         run: |
