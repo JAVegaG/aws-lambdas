@@ -44,7 +44,7 @@ jobs:
       WORKSPACE: ${{ needs.Set-workspace.outputs.workspace }}
       WORKSPACE_ID: bFgYGXqNsLQ # Develop workspace id
 
-    if: WORKSPACE == "develop"
+    if: ${{ env.WORKSPACE == "develop" }}
     
     steps:
 
@@ -99,7 +99,7 @@ jobs:
       WORKSPACE: ${{ needs.Set-workspace.outputs.workspace }}
       WORKSPACE_ID: zWazvHiGVQc # production workspace id
     
-    if: WORKSPACE == "main"
+    if: ${{ WORKSPACE == "main" }}
     
     steps:
 
