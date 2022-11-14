@@ -1,0 +1,137 @@
+name: Update aws lambdas function code
+
+run-name: ${{ github.actor }} is updating aws lambdas function code 🚀
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - develop
+      - main
+  push:
+    branches:
+      - develop
+
+env:
+  AWS_REGION: us-east-1 # Must be the same used on terraform
+
+jobs:
+
+  Set-workspace:
+    
+    runs-on: ubuntu-latest
+    outputs:
+      workspace:  ${{ steps.set-workspace.outputs.workspace }}
+    
+    steps:
+
+      - name: Set workspace
+        id: set-workspace
+        run: |
+          if [[ $GITHUB_EVENT_NAME == "pull_request" ]]; then
+            echo "workspace=$GITHUB_BASE_REF" >> $$GITHUB_OUTPUT
+          else
+            echo "workspace=$GITHUB_REF_NAME" >> $$GITHUB_OUTPUT
+          fi
+
+  Update-develop:
+    
+    needs: Set-workspace
+    if: needs.Set-workspace.outputs.workspace == "develop"
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: needs.Set-workspace.outputs.workspace
+      WORKSPACE_ID: bFgYGXqNsLQ # Develop workspace id
+    
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install aws
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: $AWS_REGION
+
+      - name: zip read function
+        run: |
+          if [[ -e index.zip ]]; then
+            rm index.zip
+          else
+            zip "index.zip" http-read/*
+          fi
+        
+      - name: update read function
+        run: |
+          aws lambda update-function --region $AWS_REGION \
+          --function-name "http-read-$AWS_REGION-$WORKSPACE-$WORKSPACE_ID" \
+          --zip-file "index.zip"
+      
+      - name: zip write function
+        run: |
+          if [[ -e index.zip ]]; then
+            rm index.zip
+          else
+            zip "index.zip" http-write/*
+          fi
+        
+      - name: update write function
+        run: |
+          aws lambda update-function --region $AWS_REGION \
+          --function-name "http-write-$AWS_REGION-$WORKSPACE-$WORKSPACE_ID" \
+          --zip-file "index.zip"
+
+  Update-production:
+    
+    needs: Set-workspace
+    if: needs.Set-workspace.outputs.workspace == "main"
+    runs-on: ubuntu-latest
+    env:
+      WORKSPACE: needs.Set-workspace.outputs.workspace
+      WORKSPACE_ID: zWazvHiGVQc # production workspace id
+    
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install aws
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: $AWS_REGION
+
+      - name: zip read function
+        run: |
+          if [[ -e index.zip ]]; then
+            rm index.zip
+          else
+            zip "index.zip" http-read/*
+          fi
+        
+      - name: update read function
+        run: |
+          aws lambda update-function --region $AWS_REGION \
+          --function-name "http-read-$AWS_REGION-$WORKSPACE-$WORKSPACE_ID" \
+          --zip-file "index.zip"
+      
+      - name: zip write function
+        run: |
+          if [[ -e index.zip ]]; then
+            rm index.zip
+          else
+            zip "index.zip" http-write/*
+          fi
+        
+      - name: update write function
+        run: |
+          aws lambda update-function --region $AWS_REGION \
+          --function-name "http-write-$AWS_REGION-$WORKSPACE-$WORKSPACE_ID" \
+          --zip-file "index.zip"
+
+
+
