@@ -15,6 +15,7 @@ on:
 
 env:
   AWS_REGION: us-east-1 # Must be the same used on terraform
+  TABLE_NAME: books # Must be the same used on terraform
 
 jobs:
 
@@ -38,10 +39,10 @@ jobs:
   Update-develop:
     
     needs: Set-workspace
-    if: needs.Set-workspace.outputs.workspace == "develop"
+    if: ${{ needs.Set-workspace.outputs.workspace == "develop" }}
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: needs.Set-workspace.outputs.workspace
+      WORKSPACE: ${{ needs.Set-workspace.outputs.workspace }}
       WORKSPACE_ID: bFgYGXqNsLQ # Develop workspace id
     
     steps:
@@ -56,12 +57,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: $AWS_REGION
 
+      - name: Adequate functions
+        run: |
+          sed -i "s|$TABLE_NAME|$TABLE_NAME-$WORKSPACE|g" http-read/index.js
+          sed -i "s|$TABLE_NAME|$TABLE_NAME-$WORKSPACE|g" http-write/index.js
+
       - name: zip read function
         run: |
           if [[ -e index.zip ]]; then
             rm index.zip
           else
-            zip "index.zip" http-read/*
+            zip "index.zip" http-read/index.js
           fi
         
       - name: update read function
@@ -75,7 +81,7 @@ jobs:
           if [[ -e index.zip ]]; then
             rm index.zip
           else
-            zip "index.zip" http-write/*
+            zip "index.zip" http-write/index.js
           fi
         
       - name: update write function
@@ -87,10 +93,10 @@ jobs:
   Update-production:
     
     needs: Set-workspace
-    if: needs.Set-workspace.outputs.workspace == "main"
+    if: ${{ needs.Set-workspace.outputs.workspace == "main" }}
     runs-on: ubuntu-latest
     env:
-      WORKSPACE: needs.Set-workspace.outputs.workspace
+      WORKSPACE: ${{ needs.Set-workspace.outputs.workspace }}
       WORKSPACE_ID: zWazvHiGVQc # production workspace id
     
     steps:
@@ -110,7 +116,7 @@ jobs:
           if [[ -e index.zip ]]; then
             rm index.zip
           else
-            zip "index.zip" http-read/*
+            zip "index.zip" http-read/index.js
           fi
         
       - name: update read function
@@ -124,7 +130,7 @@ jobs:
           if [[ -e index.zip ]]; then
             rm index.zip
           else
-            zip "index.zip" http-write/*
+            zip "index.zip" http-write/index.js
           fi
         
       - name: update write function
