@@ -70,7 +70,7 @@ jobs:
           if [[ -e index.zip ]]; then
             rm index.zip
           else
-            cd http-read && zip -r9 "index.zip" *
+            cd http-read && zip -r9 ../index.zip *
           fi
         
       - name: update read function
@@ -84,7 +84,7 @@ jobs:
           if [[ -e index.zip ]]; then
             rm index.zip
           fi
-          cd http-write && zip -r9 "index.zip" *
+          cd http-write && zip -r9 ../index.zip *
         
       - name: update write function
         run: |
@@ -119,7 +119,7 @@ jobs:
           if [[ -e index.zip ]]; then
             rm index.zip
           else
-            cd http-read && zip -r9 "index.zip" *
+            cd http-read && zip -r9 ../index.zip *
           fi
         
       - name: update read function
@@ -133,7 +133,7 @@ jobs:
           if [[ -e index.zip ]]; then
             rm index.zip
           fi
-          cd http-write && zip -r9 "index.zip" *
+          cd http-write && zip -r9 ../index.zip *
         
       - name: update write function
         run: |
