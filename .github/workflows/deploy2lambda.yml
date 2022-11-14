@@ -39,7 +39,7 @@ jobs:
   Update-develop:
     
     needs: select-workspace
-    if: ${{ github.ref_name == "develop" || github.base.ref_name == "develop" }}
+    if: needs.select-workspace.outputs.workspace == 'develop'
 
     runs-on: ubuntu-latest
     env:
@@ -94,7 +94,7 @@ jobs:
   Update-production:
     
     needs: select-workspace
-    if: ${{ github.ref_name == "main" || github.base.ref_name == "main" }}
+    if: needs.select-workspace.outputs.workspace == 'main'
 
     runs-on: ubuntu-latest
     env:
