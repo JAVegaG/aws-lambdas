@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
                     .delete({
                         TableName: "books",
                         Key: {
-                            id: event.pathParameters.id
+                            id: Number(event.pathParameters.id)
                         }
                     })
                     .promise();
@@ -44,7 +44,7 @@ exports.handler = async (event, context) => {
                     .update({
                         TableName: "books",
                         Key: {
-                            id: event.pathParameters.id
+                            id: Number(event.pathParameters.id)
                         },
                         ExpressionAttributeNames: {
                             '#a': 'author',
